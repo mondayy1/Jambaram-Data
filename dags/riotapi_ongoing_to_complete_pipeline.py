@@ -10,7 +10,7 @@ with open('/home/hojoong/Jambaram-Data/secrets.json') as f:
     secrets = json.loads(f.read())
 key = secrets['apikey_riot']
 region = 'na1'
-df = pd.read_csv('/mnt/disk1/hojoong/matches/bone.csv', index_col=0)
+df = pd.read_csv('/mnt/disk1/hojoong/matches/bone.csv')
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -33,24 +33,33 @@ def save_match_infos(**kwargs):
     
     for match_id in match_ids:
         match_id = match_id[:-5]
-        df = pd.read_csv('/mnt/disk1/hojoong/matches/bone.csv', index_col=0)
+        df = pd.read_csv('/mnt/disk1/hojoong/matches/bone.csv')
         url = f'https://americas.api.riotgames.com/lol/match/v5/matches/{match_id}?api_key={key}'
         response = requests.get(url)
         if response.status_code == 200:
             match_info = response.json()
+
             participants_blue = match_info['info']['participants'][:5]
             participants_red = match_info['info']['participants'][5:]
+
             championids_blue = get_champids_from_participants(participants_blue)
             championids_red = get_champids_from_participants(participants_red)
+
             if match_info['info']['teams'][0]['win'] == True: #Blue Win
                 championids_blue['win']=1
                 championids_red['win']=0
             else: #Red Win
                 championids_blue['win']=0
                 championids_red['win']=1
+            
+            championids_blue['score'] = 0
+            championids_red['score'] = 0
+
             df.loc[0] = championids_blue
             df.loc[1] = championids_red
+
             df.to_csv(f'/mnt/disk1/hojoong/matches/complete/{match_id}.csv', index=False)
+
             os.unlink(f'/mnt/disk1/hojoong/matches/ongoing/{match_id}.json')
         else: #TODOs are new matches
             break   
