@@ -6,5 +6,8 @@ secrets.json
 
 # db
 dbtest.ipynb
+
+# model
 getjbscore.ipynb
 winmodeltest.ipynb
+logs.log
