@@ -3,14 +3,30 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 import pandas as pd
 import requests
+import psycopg2
 import json
 import os
 
 with open('/home/hojoong/Jambaram-Data/secrets.json') as f:
     secrets = json.loads(f.read())
 key = secrets['apikey_riot']
-region = 'na1'
+
+db = psycopg2.connect(host=secrets['DB']['host'],
+                      dbname=secrets['DB']['dbname'],
+                      user=secrets['DB']['user'],
+                      password=secrets['DB']['password'],
+                      port=secrets['DB']['port'])
+cursor = db.cursor()
+
 df = pd.read_csv('/mnt/disk1/hojoong/matches/bone.csv')
+columns = ', '.join([f'"{key}"' for key in df.columns])
+placeholders = ', '.join(['%s' for _ in range(len(df.columns))])
+insert_query = '''
+INSERT INTO match_data_champion_168 ({})
+VALUES ({});
+'''
+region = 'na1'
+
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -18,21 +34,22 @@ default_args = {
 }
 
 def get_champids_from_participants(participants):
-    championids = {col:0 for col in df.columns}
+    championids = {col:'0' for col in df.columns}
     for participant in participants:
-        championids[str(participant['championId'])] = 1
+        championids[str(participant['championId'])] = '1'
     return championids
 
 def list_match_ids():
-    match_ids = sorted(os.listdir('/mnt/disk1/hojoong/matches/ongoing'))
-    return match_ids
+    #match_ids = sorted(os.listdir('/mnt/disk1/hojoong/matches/ongoing'))
+    cursor.execute('SELECT * FROM match_ids_ongoing;')
+    matches = cursor.fetchall()
+    return matches
 
 def save_match_infos(**kwargs):
     ti = kwargs['ti']
-    match_ids = ti.xcom_pull(task_ids='list_match_ids_task')
+    matches = ti.xcom_pull(task_ids='list_match_ids_task')
     
-    for match_id in match_ids:
-        match_id = match_id[:-5]
+    for match_id, date in matches:
         df = pd.read_csv('/mnt/disk1/hojoong/matches/bone.csv')
         url = f'https://americas.api.riotgames.com/lol/match/v5/matches/{match_id}?api_key={key}'
         response = requests.get(url)
@@ -46,23 +63,23 @@ def save_match_infos(**kwargs):
             championids_red = get_champids_from_participants(participants_red)
 
             if match_info['info']['teams'][0]['win'] == True: #Blue Win
-                championids_blue['win']=1
-                championids_red['win']=0
+                championids_blue['win']='1'
+                championids_red['win']='0'
             else: #Red Win
-                championids_blue['win']=0
-                championids_red['win']=1
+                championids_blue['win']='0'
+                championids_red['win']='1'
             
             championids_blue['score'] = 0
             championids_red['score'] = 0
 
-            df.loc[0] = championids_blue
-            df.loc[1] = championids_red
+            cursor.execute(insert_query.format(columns, placeholders), list(championids_blue.values()))
+            cursor.execute(insert_query.format(columns, placeholders), list(championids_red.values()))
 
-            df.to_csv(f'/mnt/disk1/hojoong/matches/complete/{match_id}.csv', index=False)
+            cursor.execute('DELETE FROM match_ids_ongoing WHERE id = %s;', (match_id, ))
 
-            os.unlink(f'/mnt/disk1/hojoong/matches/ongoing/{match_id}.json')
-        else: #TODOs are new matches
-            break   
+            db.commit()
+        else: #MATCH ON GOING, DOESNT HAVE TO CHECK
+            break
 
 with DAG('riot_api_ongoing_to_complete_pipeline',
          default_args=default_args,

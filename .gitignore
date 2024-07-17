@@ -3,3 +3,6 @@ secrets.json
 
 # vscode
 *.code-workspace
+
+# db
+dbtest.ipynb

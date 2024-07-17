@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 import json
 
-ddragonurl = 'https://ddragon.leagueoflegends.com/cdn/14.13.1/data/en_US/champion.json'
+ddragonurl = 'https://ddragon.leagueoflegends.com/cdn/14.14.1/data/en_US/champion.json'
 response = requests.get(ddragonurl)
 data = response.json()
 
