@@ -1,7 +1,11 @@
 # Jambaram-Data
 ARAM(칼바람) champion combination recommendation system
 
-### 사진
+아키텍쳐 사진
+
+# Data Pipeline
+
+사진: db table
 
 # :floppy_disk: Installation
 가상환경 생성
