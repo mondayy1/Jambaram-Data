@@ -35,9 +35,14 @@ default_args = {
 
 def get_champids_from_participants(participants):
     championids = {col:'0' for col in df.columns}
+    dpm = 0; gpm = 0; ehs = 0
     for participant in participants:
         championids[str(participant['championId'])] = '1'
-    return championids
+        dpm += participant['challenges']['damagePerMinute'] / 2 / 100
+        gpm += participant['challenges']['goldPerMinute'] / 100
+        ehs += participant['challenges']['effectiveHealAndShielding'] / 2000
+    score = dpm * 1.1 + gpm * 0.9 + ehs * 0.5
+    return score, championids
 
 def list_match_ids():
     #match_ids = sorted(os.listdir('/mnt/disk1/hojoong/matches/ongoing'))
@@ -59,8 +64,8 @@ def save_match_infos(**kwargs):
             participants_blue = match_info['info']['participants'][:5]
             participants_red = match_info['info']['participants'][5:]
 
-            championids_blue = get_champids_from_participants(participants_blue)
-            championids_red = get_champids_from_participants(participants_red)
+            score_blue, championids_blue = get_champids_from_participants(participants_blue)
+            score_red, championids_red = get_champids_from_participants(participants_red)
 
             if match_info['info']['teams'][0]['win'] == True: #Blue Win
                 championids_blue['win']='1'
@@ -69,8 +74,8 @@ def save_match_infos(**kwargs):
                 championids_blue['win']='0'
                 championids_red['win']='1'
             
-            championids_blue['score'] = 0
-            championids_red['score'] = 0
+            championids_blue['score'] = score_blue
+            championids_red['score'] = score_red
 
             cursor.execute(insert_query.format(columns, placeholders), list(championids_blue.values()))
             cursor.execute(insert_query.format(columns, placeholders), list(championids_red.values()))
@@ -79,7 +84,7 @@ def save_match_infos(**kwargs):
 
             db.commit()
         else: #MATCH ON GOING, DOESNT HAVE TO CHECK
-            break
+            pass
 
 with DAG('riot_api_ongoing_to_complete_pipeline',
          default_args=default_args,
