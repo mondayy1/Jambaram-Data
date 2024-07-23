@@ -26,14 +26,13 @@ $ conda activate venv-name
 
 Airflow 설치
 ```
-$ pip install apache-airflow
+$ pip install -r requirements.txt
 ```
 
 폴더 이동 (default=airflow)
 ```
 $ cd airflow
 ```
-
 
 Git Clone
 ```
