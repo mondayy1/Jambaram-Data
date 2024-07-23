@@ -1,7 +1,7 @@
 TODO: 로고
 
 # :sparkles: Jambaram-Data
-ARAM(칼바람) champion combination recommendation system
+> ARAM(칼바람) champion combination recommendation system TODO: [Demo](http://jambaram.xyz)
 
 TODO: 아키텍쳐 그림
 
