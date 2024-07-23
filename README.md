@@ -1,11 +1,17 @@
+TODO: 로고
+
 # Jambaram-Data
 ARAM(칼바람) champion combination recommendation system
 
-아키텍쳐 사진
+TODO: 아키텍쳐 그림
 
-# Data Pipeline
+# Data architecture
+#### DB Diagram
+<img width="527" alt="Screenshot 2024-07-24 at 12 59 32 AM" src="https://github.com/user-attachments/assets/a4dee1da-e7d3-446a-a519-dedb07a4346b">
 
-사진: db table
+#### Pipeline
+TODO: 파이프라인 그림
+
 
 # :floppy_disk: Installation
 가상환경 생성
