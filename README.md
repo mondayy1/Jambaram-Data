@@ -26,7 +26,7 @@ $ conda activate venv-name
 
 Airflow 설치
 ```
-$ pip install -r requirements.txt
+$ pip install apache-airflow
 ```
 
 폴더 이동 (default=airflow)
@@ -37,6 +37,11 @@ $ cd airflow
 Git Clone
 ```
 $ git clone git@github.com:mondayy1/Jambaram-Data.git
+```
+
+패키지 설치
+```
+$ pip install -r requirements.txt
 ```
 
 DB 초기화, sqlite가 기본
