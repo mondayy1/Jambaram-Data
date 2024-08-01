@@ -2,7 +2,7 @@
 > ARAM(칼바람) champion combination recommendation system [Demo](http://jambaram.xyz)
 
 #### Architecture
-![structure](https://github.com/user-attachments/assets/64b60686-f2cd-45ef-9a8d-ffc2f52312bc)
+![structure](https://github.com/user-attachments/assets/cf7b2434-18fc-43e8-9b6b-ec621ba4e5b1)
 
 
 # :camel: Data architecture
