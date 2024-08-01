@@ -1,6 +1,7 @@
 # :sparkles: Jambaram-Data
 > ARAM(칼바람) champion combination recommendation system [Demo](http://jambaram.xyz)
 
+#### Architecture
 ![structure](https://github.com/user-attachments/assets/64b60686-f2cd-45ef-9a8d-ffc2f52312bc)
 
 
