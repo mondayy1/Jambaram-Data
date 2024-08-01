@@ -1,5 +1,3 @@
-TODO: 로고
-
 # :sparkles: Jambaram-Data
 > ARAM(칼바람) champion combination recommendation system [Demo](http://jambaram.xyz)
 
