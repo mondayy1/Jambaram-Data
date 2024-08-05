@@ -21,20 +21,27 @@ default_args = {
 }
 
 def update_today_best_comb():
-    tables = ['today_best_comb_win', 'today_best_comb_score']
+    cursor.execute(f'SELECT * FROM today_best_comb_win')
+    row = cursor.fetchall()
+    if len(row) > 0:
+        cursor.execute(f'DELETE FROM today_best_comb_win WHERE champions = %s', (row[0][0],))
+    db.commit()
 
-    for table in tables:
-        cursor.execute(f'TRUNCATE TABLE {table}')
-        db.commit()
+    cursor.execute(f'SELECT * FROM today_best_comb_score')
+    row = cursor.fetchall()
+    if len(row) > 0:
+        cursor.execute(f'DELETE FROM today_best_comb_score WHERE champions = %s', (row[0][0],))
+    db.commit()
+    
 
-with DAG('daily',
+with DAG('dailytask',
         default_args=default_args,
-        schedule_interval='0 9 * * *',
+        schedule_interval='0 0 * * *',
         tags=['daily'],
         catchup=False) as dag:
 
     update_today_best_comb_task = PythonOperator(
-        task_id='fetch_featured_games_task',
+        task_id='truncate_today_combs',
         python_callable=update_today_best_comb
     )
 
