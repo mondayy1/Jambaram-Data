@@ -1,11 +1,20 @@
-# Jambaram-Data
-ARAM(칼바람) champion combination recommendation system
+![python](https://img.shields.io/badge/python-3.10.14-blue.svg?style=flat-square)
+![miniforge](https://img.shields.io/badge/miniforge-24.5.0-blue.svg?style=flat-square)
 
-아키텍쳐 사진
+# :sparkles: Jambaram-Data
+> ARAM(칼바람) champion combination recommendation system [Demo](http://jambaram.xyz)
 
-# Data Pipeline
+#### Architecture
+![structure](https://github.com/user-attachments/assets/cf7b2434-18fc-43e8-9b6b-ec621ba4e5b1)
 
-사진: db table
+
+# :camel: Data architecture
+#### DB Diagram
+<img width="527" alt="Screenshot 2024-07-24 at 12 59 32 AM" src="https://github.com/user-attachments/assets/a4dee1da-e7d3-446a-a519-dedb07a4346b">
+
+#### Pipeline
+TODO: 파이프라인 그림
+
 
 # :floppy_disk: Installation
 가상환경 생성
@@ -28,10 +37,14 @@ $ pip install apache-airflow
 $ cd airflow
 ```
 
-
 Git Clone
 ```
 $ git clone git@github.com:mondayy1/Jambaram-Data.git
+```
+
+패키지 설치
+```
+$ pip install -r requirements.txt
 ```
 
 DB 초기화, sqlite가 기본
