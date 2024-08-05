@@ -21,7 +21,7 @@ default_args = {
 }
 
 def update_today_best_comb():
-    tables = ['alltime_best_comb_win', 'alltime_best_comb_score', 'today_best_comb_win', 'today_best_comb_score']
+    tables = ['today_best_comb_win', 'today_best_comb_score']
 
     for table in tables:
         cursor.execute(f'TRUNCATE TABLE {table}')
