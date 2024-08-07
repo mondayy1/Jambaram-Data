@@ -9,11 +9,11 @@
 
 
 # :camel: Data architecture
-#### DB Diagram
-<img width="527" alt="Screenshot 2024-07-24 at 12 59 32 AM" src="https://github.com/user-attachments/assets/a4dee1da-e7d3-446a-a519-dedb07a4346b">
-
 #### Pipeline
 ![pipeline](https://github.com/user-attachments/assets/5b9dbce9-33a7-431d-a576-66b65389d4c0)
+
+#### DB Diagram
+<img width="527" alt="Screenshot 2024-07-24 at 12 59 32 AM" src="https://github.com/user-attachments/assets/a4dee1da-e7d3-446a-a519-dedb07a4346b">
 
 
 # :floppy_disk: Installation
