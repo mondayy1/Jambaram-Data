@@ -13,7 +13,7 @@
 <img width="527" alt="Screenshot 2024-07-24 at 12 59 32 AM" src="https://github.com/user-attachments/assets/a4dee1da-e7d3-446a-a519-dedb07a4346b">
 
 #### Pipeline
-TODO: 파이프라인 그림
+![pipeline](https://github.com/user-attachments/assets/5b9dbce9-33a7-431d-a576-66b65389d4c0)
 
 
 # :floppy_disk: Installation
